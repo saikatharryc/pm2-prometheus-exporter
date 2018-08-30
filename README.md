@@ -1,5 +1,14 @@
+
+[![NPM](https://nodei.co/npm/pm2-metrics.png?downloads=true)](https://nodei.co/npm/pm2-metrics/)
+
 ### Easy Install:
-#### Clone and run as a seperate application
+#### install with PM2
+
+```
+pm2 install pm2-metrics
+```
+
+#### Or Clone and run as a seperate application
 ```shell
     $ git clone https://github.com/saikatharryc/pm2-prometheus-exporter.git
     $ npm install
@@ -8,7 +17,7 @@
 
 
 
-#### Open your browser : 
+####  Open your browser : 
 ```shell
 http://localhost:9209/metrics
 ```
@@ -26,4 +35,4 @@ in `prometheus.yaml`
       - targets:
           - localhost:9209
 
-##### *change host name from `localhost` on basics where you are hosting.
+###### *change host name from `localhost` on basics where you are hosting.

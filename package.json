@@ -1,0 +1,43 @@
+{
+  "name": "pm2-metrics",
+  "version": "1.0.0",
+  "description": "Produces Metrics of Pm2 of running instances.little updated version of https://github.com/burningtree/pm2-prometheus-exporter, any PR is appriciated.",
+  "main": "exporter.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saikatharryc/pm2-prometheus-exporter.git"
+  },
+  "apps": [
+    {
+      "merge_logs": true,
+      "max_memory_restart": "200M",
+      "script": "exporter.js"
+    }
+  ],
+  "keywords": [
+    "pm2",
+    "prometheus",
+    "metrics",
+    "pmx"
+  ],
+  "author": "Jan Stránský <jan.stransky@arnal.cz>",
+  "contributor": [
+    {
+      "name": "Saikat Chakrabortty <@saikatharryc>",
+      "email": "saikatchakrabortty2@gmail.com",
+      "url": ""
+    }
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saikatharryc/pm2-prometheus-exporter/issues"
+  },
+  "homepage": "https://github.com/saikatharryc/pm2-prometheus-exporter#readme",
+  "dependencies": {
+    "pm2": "^3.0.4",
+    "prom-client": "^11.1.1"
+  }
+}

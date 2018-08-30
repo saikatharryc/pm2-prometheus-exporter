@@ -34,6 +34,6 @@ in `prometheus.yaml`
     static_configs:
       - targets:
           - localhost:9209
-
+######  PR(s) & issue(s) are welcome, 
 ###### *change host name from `localhost` on basics where you are hosting.
 ###### Modified & Working Version from  [pm2-prometheus-exporter by @burningtree](https://github.com/burningtree/pm2-prometheus-exporter)

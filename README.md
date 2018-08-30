@@ -36,3 +36,4 @@ in `prometheus.yaml`
           - localhost:9209
 
 ###### *change host name from `localhost` on basics where you are hosting.
+###### Modified & Working Version from  [pm2-prometheus-exporter by @burningtree](https://github.com/burningtree/pm2-prometheus-exporter)

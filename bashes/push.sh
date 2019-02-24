@@ -4,7 +4,7 @@ git config --global user.name "Travis CI"
 git add .
 git commit -a -m "${COMMIT_MESSAGE}" -m '[ci skip]'
 LATEST_TAG="$(git fetch origin && git tag | tail -1)"
-if [[ LATEST_TAG -eq  ${COMMIT_MESSAGE} ]]; then exit 0;
+if [[ LATEST_TAG -eq  ${COMMIT_MESSAGE} ]]; then exit 0; fi
 git tag -a "${COMMIT_MESSAGE}" -m "${LAST_COMMIT_MESSAGE}" -m "" -m "[ci skip]"
 git remote remove origin
 git remote add origin https://${GITHUB_TOKEN}@github.com/saikatharryc/pm2-prometheus-exporter.git

@@ -12,6 +12,7 @@ before_script:
 script:
   - CODECOV_TOKEN=$CODECOV_TOKEN npm test
   - if [ "$TESTS_FAILED" -ne 0 ]; then exit 1; fi
+  - CODECOV_TOKEN=$CODECOV_TOKEN npm run coverage
   - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "master" ]; then
     npm config set git-tag-version=false && NPM_VERSION=$(npm version patch); fi
   - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "master" ]; then

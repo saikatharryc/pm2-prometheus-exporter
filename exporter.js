@@ -5,7 +5,7 @@ const pm2 = require('pm2');
 const io = require('@pm2/io');
 
 const prefix = 'pm2';
-const labels = ['id', 'name', 'instance', 'interpreter'];
+const labels = ['id', 'name', 'instance', 'interpreter', 'node_version'];
 const map = [
   ['up', 'Is the process running'],
   ['cpu', 'Process cpu usage'],
@@ -33,11 +33,13 @@ function metrics() {
   return pm2c('list')
     .then(list => {
       list.forEach(p => {
+        console.log(p, p.exec_interpreter, '>>>>>>');
         const conf = {
           id: p.pm_id,
           name: p.name,
           instance: p.pm2_env.NODE_APP_INSTANCE,
-          interpreter: p.exec_interpreter,
+          interpreter: p.pm2_env.exec_interpreter,
+          node_version: p.pm2_env.node_version,
         };
 
         const values = {
@@ -47,6 +49,7 @@ function metrics() {
           uptime: Math.round((Date.now() - p.pm2_env.pm_uptime) / 1000),
           instances: p.pm2_env.instances || 1,
           restarts: p.pm2_env.restart_time,
+          prev_restart_delay: p.pm2_env.prev_restart_delay,
         };
 
         const names = Object.keys(p.pm2_env.axm_monitor);

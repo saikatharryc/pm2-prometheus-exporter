@@ -1,0 +1,30 @@
+language: node_js
+sudo: false
+node_js:
+  - 10
+  - 9
+  - 8
+  - 7
+cache:
+  directories:
+    - '$HOME/.npm'
+    - node_modules
+before_script:
+  - npm config set -g production false
+  - npm install
+script:
+  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "master" ]; then npm config set git-tag-version=false && NPM_VERSION=$(npm version patch); fi
+  - CODECOV_TOKEN=${CODECOV_TOKEN} npm test
+  - if [ "$TESTS_FAILED" -ne 0 ]; then exit 1; fi
+  - if [ "$TRAVIS_PULL_REQUEST" = "false" ] && [ "$TRAVIS_BRANCH" = "master" ]; then env COMMIT_MESSAGE=${NPM_VERSION:1} GITHUB_TOKEN=${GITHUB_TOKEN} ./bashes/push.sh; fi
+after_failure:
+  - dmesg | grep -i kill
+  - sleep 4
+deploy:
+  provider: npm
+  email: saikatchakrabortty2@gmail.com
+  api_key:
+    secure: cGZbB5x7oWWm0quWcnBOhsLX2y0X4Ilk5pDKyq46a9aRnWIIjfCQJM5rxA6h7Bf96VhGNLpDKMoLPYN66KrnWYLrbiWQZCkSDyS8ZkDb9Zsea8Gs0BEfMfUJfJSi3J2lwYtiC4veAQyj+5j57tXIJA4uTjMMXXWSCn1QFBjWFWsa08x7k1w2he/GvXkJTCkXQ4UQlcAVVIIehwTUVj83rl2U7e1dUIqbhq012C6j6X62pbRk2fhX9pj/rHwBNt/Jpua4QkdFcyaScMNoV3FmTzgYIi5l5ZxmgHsDMFch47qHsu+Vp7gG1Qjvyl3yiCJhe74gR6m2d72qm4HMCrlIe+JEYkhzX8WVNy/fMdGqZTTYHZ284JjmSDRqOfQ8pD9ZHkY6NGHDSWUDgyv+ThnnkJjTxmpPiyEr9MjYsoQCopWNy9SC0HUjGFx5xmGjGSzOZSd331R73sJDUtRqgSA0KDJpWISAsTYau3NBoIHiTfv3VXEAdQJtc9VXAtVg22Pd6FwPawuAIiRmColPLM0BsJ6AX9Mr6gtx3yVBu3iJFnmpcIgL90hEq2hYoSfV8H7Sfeo4JKOwL/cfHbP8v326fNde69b9d9YHWMnY6hqr6fL2jHl3P74fcxVsTly4fyibljyNapyQtMPY0xIIqcUSXdTNUTPnN4udGRFCYCqPoeE=
+  # on:
+  #   tags: true
+  #   repo: saikatharryc/pm2-prometheus-exporter

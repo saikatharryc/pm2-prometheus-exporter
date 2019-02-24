@@ -2,9 +2,50 @@
   "name": "pm2-metrics",
   "version": "1.0.1",
   "description": "Produces Metrics of Pm2 of running instances.little updated version of https://github.com/burningtree/pm2-prometheus-exporter, any PR is appriciated.",
+  "dependencies": {
+    "@pm2/io": "^3.1.1",
+    "pm2": "^3.3.1",
+    "prom-client": "^11.1.1"
+  },
+  "devDependencies": {
+    "ava": "^1.2.1",
+    "codecov": "^3.2.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "latest",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-prettier": "latest",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.2.2",
+    "nyc": "^13.3.0",
+    "prettier": "1.16.4",
+    "remark-cli": "^4.0.0",
+    "remark-license": "^5.0.0",
+    "remark-preset-github": "^0.0.6",
+    "xo": "latest"
+  },
   "main": "exporter.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "remarkConfig": {
+    "plugins": [
+      "preset-github"
+    ]
+  },
+  "nyc": {
+    "reporter": [
+      "text-summary",
+      "lcov",
+      "html",
+      "text"
+    ],
+    "temp-directory": "./coverage",
+    "all": true,
+    "extension": [
+      ".js"
+    ],
+    "sourceMap": true,
+    "instrument": true,
+    "include": [
+      "exporter.js"
+    ]
   },
   "repository": {
     "type": "git",
@@ -36,8 +77,47 @@
     "url": "https://github.com/saikatharryc/pm2-prometheus-exporter/issues"
   },
   "homepage": "https://github.com/saikatharryc/pm2-prometheus-exporter#readme",
-  "dependencies": {
-    "pm2": "^3.0.4",
-    "prom-client": "^11.1.1"
+  "lint-staged": {
+    "*.{js,jsx,mjs,ts,tsx,css,less,scss,json,graphql}": [
+      "prettier --ignore-path ./.prettierignore",
+      "git add"
+    ],
+    "*.md": [
+      "remark . -qfo",
+      "git add"
+    ]
+  },
+  "xo": {
+    "ignores": [
+      "coverage/**"
+    ],
+    "extends": "prettier",
+    "plugins": [
+      "prettier"
+    ],
+    "parserOptions": {
+      "sourceType": "script"
+    },
+    "rules": {
+      "max-len": [
+        "error",
+        {
+          "code": 180,
+          "ignoreUrls": true
+        }
+      ],
+      "capitalized-comments": "off",
+      "camelcase": "off",
+      "no-warning-comments": "off",
+      "unicorn/catch-error-name": "off"
+    },
+    "space": true
+  },
+  "scripts": {
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov -t $CODECOV_TOKEN",
+    "lint": "xo --fix && remark . -qfo",
+    "precommit": "rm -rf coverage/*.* && lint-staged && npm test",
+    "test": "npm run lint && npm run test-coverage",
+    "test-coverage": "nyc ava"
   }
 }

@@ -2,7 +2,7 @@ const http = require('http');
 const prom = require('prom-client');
 const pm2 = require('pm2');
 
-const { argv } = process;
+const io = require('@pm2/io');
 
 const prefix = 'pm2';
 const labels = ['name', 'instance'];
@@ -94,10 +94,12 @@ function exporter() {
     }
   });
 
-  const port = Number(argv[1]) || 9209;
+  const conf = io.initModule();
+  const port = conf.port || 9209;
+  const host = conf.host || '0.0.0.0';
 
-  server.listen(port);
-  console.log('pm2-prometheus-exporter listening at %s', port);
+  server.listen(port, host);
+  console.log('pm2-prometheus-exporter listening at %s:%s', host, port);
 }
 
 exporter();

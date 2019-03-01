@@ -1,9 +1,10 @@
 // @ts-check
 
 const http = require('http');
+const os = require('os');
 const prom = require('prom-client');
 const pm2 = require('pm2');
-
+const bytes = require('bytes');
 const io = require('@pm2/io');
 
 const prefix = 'pm2';
@@ -28,6 +29,18 @@ function pm2c(cmd, args = []) {
   });
 }
 
+function getInstanceIP() {
+  const networkInterface = os.networkInterfaces();
+
+  // only get instance ip from eth0
+  const host = networkInterface.eth0;
+
+  // get address from IPv4
+  const ip = host.filter(obj => obj.family === 'IPv4');
+
+  return ip;
+}
+
 function metrics() {
   const pm = {};
   prom.register.clear();
@@ -37,11 +50,10 @@ function metrics() {
   return pm2c('list')
     .then(list => {
       list.forEach(p => {
-        console.log(p, p.exec_interpreter, '>>>>>>');
         const conf = {
           id: p.pm_id,
           name: p.name,
-          instance: p.pm2_env.NODE_APP_INSTANCE,
+          instance: p.pm2_env.NODE_APP_INSTANCE || getInstanceIP(),
           interpreter: p.pm2_env.exec_interpreter,
           node_version: p.pm2_env.node_version,
         };
@@ -67,6 +79,9 @@ function metrics() {
               value = parseFloat(p.pm2_env.axm_monitor[name].value.match(/^[\d.]+/)[0]);
             } else if (name === 'Event Loop Latency') {
               value = parseFloat(p.pm2_env.axm_monitor[name].value.toString().split('m')[0]);
+            } else if (name === 'Network In' || name === 'Network Out') {
+              const [currentVal] = p.pm2_env.axm_monitor[name].value.split('/s');
+              value = bytes(currentVal);
             } else {
               value = p.pm2_env.axm_monitor[name].value;
             }
@@ -114,7 +129,11 @@ function exporter() {
     }
   });
 
-  const conf = io.initModule();
+  const conf = io.init({
+    metrics: {
+      network: true,
+    },
+  });
   const port = conf.port || 9209;
   const host = conf.host || '0.0.0.0';
 

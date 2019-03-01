@@ -10,7 +10,7 @@ const io = require('@pm2/io');
 const port = 9209;
 const host = '0.0.0.0';
 const prefix = 'pm2';
-const labels = ['id', 'name', 'instance', 'interpreter', 'node_version'];
+const labels = ['id', 'app', 'instance', 'interpreter', 'node_version'];
 const map = [
   ['up', 'Is the process running'],
   ['cpu', 'Process cpu usage'],

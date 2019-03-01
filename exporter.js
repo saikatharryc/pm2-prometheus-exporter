@@ -1,3 +1,5 @@
+// @ts-check
+
 const http = require('http');
 const prom = require('prom-client');
 const pm2 = require('pm2');
@@ -13,6 +15,8 @@ const map = [
   ['uptime', 'Process uptime'],
   ['instances', 'Process instances'],
   ['restarts', 'Process restarts'],
+  ['prev_restart_delay', 'Previous restart delay'],
+  ['pm2_event_loop_latency', 'PM2 event loop latency'],
 ];
 
 function pm2c(cmd, args = []) {
@@ -81,6 +85,12 @@ function metrics() {
 
         Object.keys(values).forEach(k => {
           if (values[k] === null) return null;
+
+          // Prometheus client Gauge will throw an error if we don't return a number
+          // so we will skip this metrics value
+          if (values[k] === undefined) {
+            return null;
+          }
 
           pm[k].set(conf, values[k]);
         });

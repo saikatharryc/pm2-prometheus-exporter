@@ -36,7 +36,7 @@ function getInstanceIP() {
   const host = networkInterface.eth0;
 
   // get address from IPv4
-  const ip = host.filter(obj => obj.family === 'IPv4');
+  const ip = host.filter(obj => obj.family === 'IPv4')[0].address;
 
   return ip;
 }
@@ -45,7 +45,7 @@ function metrics() {
   const pm = {};
   prom.register.clear();
   map.forEach(m => {
-    pm[m[0]] = new prom.Gauge(prefix + '_' + m[0], m[1], labels);
+    pm[m[0]] = new prom.Gauge(`${prefix}_${m[0]}`, m[1], labels);
   });
   return pm2c('list')
     .then(list => {
@@ -86,7 +86,7 @@ function metrics() {
               value = p.pm2_env.axm_monitor[name].value;
             }
 
-            const metricName = prefix + '_' + name.replace(/[^A-Z0-9]+/gi, '_').toLowerCase();
+            const metricName = `${prefix}_${name.replace(/[^A-Z0-9]+/gi, '_')}`.toLowerCase();
 
             if (!pm[metricName]) {
               pm[metricName] = new prom.Gauge(metricName, name, labels);

@@ -7,6 +7,8 @@ const pm2 = require('pm2');
 const bytes = require('bytes');
 const io = require('@pm2/io');
 
+const port = 9209;
+const host = '0.0.0.0';
 const prefix = 'pm2';
 const labels = ['id', 'name', 'instance', 'interpreter', 'node_version'];
 const map = [
@@ -30,15 +32,13 @@ function pm2c(cmd, args = []) {
 }
 
 function getInstanceIP() {
-  const networkInterface = os.networkInterfaces();
-
   // only get instance ip from eth0
-  const host = networkInterface.eth0;
+  const { eth0 } = os.networkInterfaces();
 
   // get address from IPv4
-  const ip = host.filter(obj => obj.family === 'IPv4')[0].address;
+  const ip = eth0.filter(obj => obj.family === 'IPv4')[0].address;
 
-  return ip;
+  return `${ip}:${port}`;
 }
 
 function metrics() {
@@ -52,7 +52,7 @@ function metrics() {
       list.forEach(p => {
         const conf = {
           id: p.pm_id,
-          name: p.name,
+          app: p.name,
           instance: p.pm2_env.NODE_APP_INSTANCE || getInstanceIP(),
           interpreter: p.pm2_env.exec_interpreter,
           node_version: p.pm2_env.node_version,
@@ -129,13 +129,11 @@ function exporter() {
     }
   });
 
-  const conf = io.init({
+  io.init({
     metrics: {
       network: true,
     },
   });
-  const port = conf.port || 9209;
-  const host = conf.host || '0.0.0.0';
 
   server.listen(port, host);
   console.log('pm2-prometheus-exporter listening at %s:%s', host, port);

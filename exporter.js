@@ -52,7 +52,8 @@ function metrics() {
       list.forEach(p => {
         const conf = {
           id: p.pm_id,
-          app: p.name,
+          service: p.name,
+          app: os.hostname(),
           instance: p.pm2_env.NODE_APP_INSTANCE || getInstanceIP(),
           interpreter: p.pm2_env.exec_interpreter,
           node_version: p.pm2_env.node_version,

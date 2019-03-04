@@ -19,7 +19,6 @@ const map = [
   ['instances', 'Process instances'],
   ['restarts', 'Process restarts'],
   ['prev_restart_delay', 'Previous restart delay'],
-  ['event_loop_latency', 'PM2 event loop latency'],
 ];
 
 function pm2c(cmd, args = []) {
@@ -68,6 +67,8 @@ function metrics() {
           restarts: p.pm2_env.restart_time,
           prev_restart_delay: p.pm2_env.prev_restart_delay,
         };
+
+        console.log(`${p.name}-${p.pm_id}`, values);
 
         const names = Object.keys(p.pm2_env.axm_monitor);
 

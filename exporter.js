@@ -40,6 +40,13 @@ function getInstanceIP() {
   return `${ip}:${port}`;
 }
 
+function getUptime(pm2Env) {
+  const { status } = pm2Env;
+  const uptime = pm2Env.pm_uptime && status === 'online' ? Math.floor((Date.now() - pm2Env.pm_uptime) / 1000) : 0;
+
+  return uptime;
+}
+
 function metrics() {
   const pm = {};
   prom.register.clear();
@@ -62,13 +69,11 @@ function metrics() {
           up: p.pm2_env.status === 'online' ? 1 : 0,
           cpu: p.monit.cpu,
           memory: p.monit.memory,
-          uptime: Math.round((Date.now() - p.pm2_env.pm_uptime) / 1000),
+          uptime: getUptime(p.pm2_env),
           instances: p.pm2_env.instances || 1,
           restarts: p.pm2_env.restart_time,
           prev_restart_delay: p.pm2_env.prev_restart_delay,
         };
-
-        console.log(`${p.name}-${p.pm_id}`, values);
 
         const names = Object.keys(p.pm2_env.axm_monitor);
 

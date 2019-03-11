@@ -15,8 +15,7 @@ const map = [
   ['uptime', 'Process uptime'],
   ['instances', 'Process instances'],
   ['restarts', 'Process restarts'],
-  ['prev_restart_delay', 'Previous restart delay'],
-  ['pm2_event_loop_latency', 'PM2 event loop latency'],
+  ['prev_restart_delay', 'Previous restart delay']
 ];
 
 function pm2c(cmd, args = []) {
@@ -65,7 +64,7 @@ function metrics() {
             let value;
             if (name === 'Loop delay') {
               value = parseFloat(p.pm2_env.axm_monitor[name].value.match(/^[\d.]+/)[0]);
-            } else if (name === 'Event Loop Latency') {
+            } else if (name.match(/Event Loop Latency/)) {
               value = parseFloat(p.pm2_env.axm_monitor[name].value.toString().split('m')[0]);
             } else {
               value = p.pm2_env.axm_monitor[name].value;

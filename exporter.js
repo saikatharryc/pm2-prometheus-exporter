@@ -15,8 +15,7 @@ const map = [
   ['uptime', 'Process uptime'],
   ['instances', 'Process instances'],
   ['restarts', 'Process restarts'],
-  ['prev_restart_delay', 'Previous restart delay'],
-  ['pm2_event_loop_latency', 'PM2 event loop latency'],
+  ['prev_restart_delay', 'Previous restart delay']
 ];
 
 function pm2c(cmd, args = []) {

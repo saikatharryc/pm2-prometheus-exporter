@@ -1,6 +1,6 @@
 {
   "name": "pm2-metrics",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Produces Metrics of Pm2 of running instances.little updated version of https://github.com/burningtree/pm2-prometheus-exporter, any PR is appriciated.",
   "dependencies": {
     "@pm2/io": "^3.1.1",

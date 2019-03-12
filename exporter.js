@@ -64,7 +64,7 @@ function metrics() {
             let value;
             if (name === 'Loop delay') {
               value = parseFloat(p.pm2_env.axm_monitor[name].value.match(/^[\d.]+/)[0]);
-            } else if (name.match(/Event Loop Latency/)) {
+            } else if (name.match(/Event Loop Latency|Heap Size/)) {
               value = parseFloat(p.pm2_env.axm_monitor[name].value.toString().split('m')[0]);
             } else {
               value = p.pm2_env.axm_monitor[name].value;

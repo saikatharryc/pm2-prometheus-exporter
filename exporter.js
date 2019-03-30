@@ -79,10 +79,10 @@ function metrics() {
 
             if (!pm[metricName]) {
               pm[metricName] = new prom.Gauge({
-                 name: metricName,
-                 help: name,
-                 labelNames: labels,
-                 registers: [registry]
+                name: metricName,
+                help: name,
+                labelNames: labels,
+                registers: [registry]
               });
             }
 

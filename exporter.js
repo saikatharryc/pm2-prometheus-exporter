@@ -29,9 +29,14 @@ function pm2c(cmd, args = []) {
 
 function metrics() {
   const pm = {};
-  prom.register.clear();
+  const registry = new prom.Registry();
   map.forEach(m => {
-    pm[m[0]] = new prom.Gauge(prefix + '_' + m[0], m[1], labels);
+    pm[m[0]] = new prom.Gauge({
+      name: prefix + '_' + m[0],
+      help: m[1],
+      labelNames: labels,
+      registers: [registry]
+    });
   });
   return pm2c('list')
     .then(list => {
@@ -73,7 +78,12 @@ function metrics() {
             const metricName = prefix + '_' + name.replace(/[^A-Z0-9]+/gi, '_').toLowerCase();
 
             if (!pm[metricName]) {
-              pm[metricName] = new prom.Gauge(metricName, name, labels);
+              pm[metricName] = new prom.Gauge({
+                 name: metricName,
+                 help: name,
+                 labelNames: labels,
+                 registers: [registry]
+              });
             }
 
             values[metricName] = value;
@@ -94,7 +104,7 @@ function metrics() {
           pm[k].set(conf, values[k]);
         });
       });
-      return prom.register.metrics();
+      return registry.metrics()
     })
     .catch(err => {
       console.log(err);

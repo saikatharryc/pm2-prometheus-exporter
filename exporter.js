@@ -3,7 +3,6 @@
 const http = require('http');
 const prom = require('prom-client');
 const pm2 = require('pm2');
-const logger = require('pino-http')()
 
 const io = require('@pm2/io');
 
@@ -42,7 +41,7 @@ function metrics() {
   return pm2c('list')
     .then(list => {
       list.forEach(p => {
-        logger.debug(p, p.exec_interpreter, '>>>>>>');
+        console.log(p, p.exec_interpreter, '>>>>>>');
         const conf = {
           id: p.pm_id,
           name: p.name,
@@ -89,7 +88,7 @@ function metrics() {
 
             values[metricName] = value;
           } catch (error) {
-            logger.error(error);
+            console.log(error);
           }
         }
 
@@ -108,7 +107,7 @@ function metrics() {
       return registry.metrics()
     })
     .catch(err => {
-      logger.error(err);
+      console.log(err);
     });
 }
 
@@ -129,7 +128,7 @@ function exporter() {
   const host = conf.host || '0.0.0.0';
 
   server.listen(port, host);
-  console.info('pm2-prometheus-exporter listening at %s:%s', host, port);
+  console.log('pm2-prometheus-exporter listening at %s:%s', host, port);
 }
 
 exporter();

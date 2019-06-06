@@ -73,7 +73,13 @@ function metrics() {
             } else if (name.match(/Event Loop Latency|Heap Size/)) {
               value = parseFloat(p.pm2_env.axm_monitor[name].value.toString().split('m')[0]);
             } else {
-              value = p.pm2_env.axm_monitor[name].value;
+              value = parseFloat(p.pm2_env.axm_monitor[name].value);
+            }
+
+            if (isNaN(value)) {
+              logger.warn('Ignoring metric name "%s" as value "%s" is not a number', name, value);
+
+              continue;
             }
 
             const metricName = prefix + '_' + name.replace(/[^A-Z0-9]+/gi, '_').toLowerCase();

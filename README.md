@@ -40,7 +40,7 @@ static_configs:
       - localhost:9209
 ```
 
-#### Grafana dashboard https://github.com/saikatharryc/pm2-prometheus-exporter/issues/1#issuecomment-499551831
+#### Grafana dashboard [#1 (comment)](https://github.com/saikatharryc/pm2-prometheus-exporter/issues/1#issuecomment-499551831)
 
 ###### PR(s) & issue(s) are welcome
 

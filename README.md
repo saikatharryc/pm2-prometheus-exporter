@@ -40,6 +40,8 @@ static_configs:
       - localhost:9209
 ```
 
+#### Grafana dashboard https://github.com/saikatharryc/pm2-prometheus-exporter/issues/1#issuecomment-499551831
+
 ###### PR(s) & issue(s) are welcome
 
 ###### \*change host name from `localhost` on basics where you are hosting

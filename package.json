@@ -6,7 +6,7 @@
     "@pm2/io": "^4.1.4",
     "pino": "^5.12.0",
     "pm2": "^3.3.1",
-    "prom-client": "^11.2.1"
+    "prom-client": "^11.5.2"
   },
   "devDependencies": {
     "ava": "^2.0.0",

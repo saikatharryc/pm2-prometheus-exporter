@@ -21,7 +21,7 @@
     "prettier": "1.18.0",
     "remark-cli": "^6.0.1",
     "remark-license": "^5.0.0",
-    "remark-preset-github": "^0.0.13",
+    "remark-preset-github": "^0.0.14",
     "xo": "latest"
   },
   "main": "exporter.js",

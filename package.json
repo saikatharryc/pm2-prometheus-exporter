@@ -24,7 +24,7 @@
     "remark-preset-github": "^0.0.13",
     "xo": "latest"
   },
-  "main": "exporter.js",
+  "main": "src/exporter.js",
   "remarkConfig": {
     "plugins": [
       "preset-github"
@@ -45,7 +45,7 @@
     "sourceMap": true,
     "instrument": true,
     "include": [
-      "exporter.js"
+      "src/exporter.js"
     ]
   },
   "repository": {
@@ -56,7 +56,7 @@
     {
       "merge_logs": true,
       "max_memory_restart": "200M",
-      "script": "exporter.js"
+      "script": "src/exporter.js"
     }
   ],
   "keywords": [

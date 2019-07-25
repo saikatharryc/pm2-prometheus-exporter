@@ -15,7 +15,7 @@ pm2 install pm2-metrics
 ```shell
     $ git clone https://github.com/saikatharryc/pm2-prometheus-exporter.git
     $ npm install
-    $ pm2 start exporter.js --name pm2-metrics
+    $ pm2 start src/exporter.js --name pm2-metrics
 ```
 
 #### Open your browser

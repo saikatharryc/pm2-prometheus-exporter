@@ -4,6 +4,8 @@
   "description": "Produces Metrics of Pm2 of running instances.little updated version of https://github.com/burningtree/pm2-prometheus-exporter, any PR is appriciated.",
   "dependencies": {
     "@pm2/io": "^4.1.4",
+    "axon": "^2.0.3",
+    "axon-rpc": "0.0.3",
     "pino": "^5.12.0",
     "pm2": "^3.3.1",
     "prom-client": "^11.2.1"
@@ -24,7 +26,7 @@
     "remark-preset-github": "^0.0.13",
     "xo": "latest"
   },
-  "main": "src/exporter.js",
+  "main": "src/index.js",
   "remarkConfig": {
     "plugins": [
       "preset-github"
@@ -45,7 +47,7 @@
     "sourceMap": true,
     "instrument": true,
     "include": [
-      "src/exporter.js"
+      "src/index.js"
     ]
   },
   "repository": {
@@ -56,7 +58,7 @@
     {
       "merge_logs": true,
       "max_memory_restart": "200M",
-      "script": "src/exporter.js"
+      "script": "src/index.js"
     }
   ],
   "keywords": [

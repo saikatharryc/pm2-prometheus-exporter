@@ -4,10 +4,29 @@
 
 # PM2 Metrics
 
+### Installation of metrics client
+
+```js
+const { incrementMetric } = require('pm2-metrics');
+incrementMetric("metricName", {
+  firstKey: "value1",
+  secondKey: "value2",
+})
+```
+
+### Installation of metrics module
+
 #### Easy Install with PM2
 
 ```shell
 pm2 install pm2-metrics
+```
+
+#### Or work with npm and save disk storage :)
+
+```shell
+    $ npm install --save git+https://github.com/saikatharryc/pm2-prometheus-exporter.git
+    $ pm2 install node_modules/pm2-metrics
 ```
 
 #### Or Clone and run as a seperate application

@@ -5,16 +5,18 @@ const prom = require('prom-client');
 const logger = require('pino')()
 const io = require('@pm2/io');
 const { pm2Registry } = require('./pm2-metrics');
+const { registry: customRegistry } = require('./custom-metrics')();
 
 function metrics() {
   return pm2Registry().then( pm2reg => {
     return prom.Registry.merge([
-      pm2reg
+      pm2reg,
+      customRegistry
     ]).metrics();
   })
 }
 
-function exporter() {
+module.exports.exporter = () => {
   const server = http.createServer((req, res) => {
     switch (req.url) {
       case '/':
@@ -32,6 +34,4 @@ function exporter() {
 
   server.listen(port, host);
   logger.info('pm2-prometheus-exporter listening at %s:%s', host, port);
-}
-
-exporter();
+};

@@ -10,17 +10,15 @@ const metricServer = () => {
   const rep = axon.socket('rep');
   rep.bind(port);
   const registry = new prom.Registry();
-  new rpc.Server(rep).expose('metrics', function (name, labelObject) {
-    if (typeof data[name] === "undefined") {
-      data[name] = new prom.Counter({
-        name,
-        help: name,
-        labelNames: Object.keys(labelObject),
+  new rpc.Server(rep).expose('metrics', function ({ type, method, createParams }, callParams, ) {
+    if (typeof data[createParams.name] === "undefined") {
+      data[createParams.name] = new prom[type]({
+        ... createParams,
         registers: [ registry ]
       });
     }
 
-    data[name].inc(labelObject);
+    data[createParams.name][method](... callParams);
   });
   return {
     registry
@@ -30,11 +28,12 @@ const metricServer = () => {
 const metricClient = () => {
   const client = new rpc.Client(req);
   req.connect(port);
-  const incrementMetric = (name, labelObject) => {
-    client.call('metrics', name, labelObject, () => '')
-  };
-
-  return { incrementMetric }
+  return (
+    {type, method, createParams}, // types: Counter, Gauge, Histogram, Summary, method: use https://github.com/siimon/prom-client  , for ex type "Counter" have: inc, reset, get, remove
+    callParams // ex : array of params which using in method (for example: type Counter, method inc, the callParams can be empty, or [incrementvalue]
+  ) => {
+    client.call('metrics', {type, method, createParams,}, callParams, () => '')
+  }
 };
 
 

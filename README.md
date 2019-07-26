@@ -7,11 +7,24 @@
 ### Installation of metrics client
 
 ```js
-const { incrementMetric } = require('pm2-metrics');
-incrementMetric("metricName", {
-  firstKey: "value1",
-  secondKey: "value2",
-})
+const metrics = require('pm2-metrics')();
+metrics({ 
+    type: "Counter", 
+    method:"inc", 
+    createParams: { 
+      name: "serverResponses", 
+      help: "This is help text of responses", 
+      labelNames: ["code", "serverName"] 
+    }
+  }, [{ code : "400", serverName:"server1.example.com" }, 15]
+);
+
+// In output u will have 
+/*
+  # HELP serverResponses This is help text of responses
+  # TYPE serverResponses counter
+  serverResponses{code="400",serverName="server1.example.com"} 15
+ */
 ```
 
 ### Installation of metrics module
@@ -22,19 +35,12 @@ incrementMetric("metricName", {
 pm2 install pm2-metrics
 ```
 
-#### Or work with npm and save disk storage :)
-
-```shell
-    $ npm install --save git+https://github.com/saikatharryc/pm2-prometheus-exporter.git
-    $ pm2 install node_modules/pm2-metrics
-```
-
 #### Or Clone and run as a seperate application
 
 ```shell
     $ git clone https://github.com/saikatharryc/pm2-prometheus-exporter.git
     $ npm install
-    $ pm2 start src/exporter.js --name pm2-metrics
+    $ pm2 start ecosystem.config.js
 ```
 
 #### Open your browser

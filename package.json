@@ -16,7 +16,7 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-prettier": "latest",
     "husky": "^2.2.0",
-    "lint-staged": "^9.2.2",
+    "lint-staged": "9.4.2",
     "nyc": "^14.0.0",
     "prettier": "1.18.0",
     "remark-cli": "^6.0.1",

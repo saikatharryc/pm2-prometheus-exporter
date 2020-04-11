@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/saikatharryc/pm2-prometheus-exporter.svg?branch=master)](https://travis-ci.org/saikatharryc/pm2-prometheus-exporter) [![codecov](https://codecov.io/gh/saikatharryc/pm2-prometheus-exporter/branch/master/graph/badge.svg)](https://codecov.io/gh/saikatharryc/pm2-prometheus-exporter) [![npm](https://img.shields.io/npm/v/pm2-metrics.svg)](https://npmjs.com/package/pm2-metrics) [![NPM Downloads](https://img.shields.io/npm/dm/pm2-metrics.svg)](https://www.npmjs.com/package/pm2-metrics)
-
-[![NPM](https://nodei.co/npm/pm2-metrics.png?downloads=true)](https://nodei.co/npm/pm2-metrics/) [![Greenkeeper badge](https://badges.greenkeeper.io/saikatharryc/pm2-prometheus-exporter.svg)](https://greenkeeper.io/)
+[![npm](https://img.shields.io/npm/v/pm2-metrics.svg)](https://npmjs.com/package/pm2-metrics) 
+[![NPM Downloads](https://img.shields.io/npm/dm/pm2-metrics.svg)](https://www.npmjs.com/package/pm2-metrics)
+[![NPM](https://nodei.co/npm/pm2-metrics.png?downloads=true)](https://nodei.co/npm/pm2-metrics/)
 
 # PM2 Metrics
 

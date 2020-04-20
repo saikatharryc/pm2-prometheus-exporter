@@ -1,5 +1,5 @@
 module.exports = {
-  apps : [{
+  apps: [{
     name: 'PM2 Exporter',
     script: 'exporter.js',
     instances: 1,

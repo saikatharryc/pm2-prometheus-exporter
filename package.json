@@ -13,11 +13,10 @@
     "codecov": "^3.2.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "latest",
-    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "latest",
     "husky": "^2.2.0",
     "lint-staged": "^9.2.2",
-    "nyc": "^14.0.0",
     "prettier": "1.18.0",
     "remark-cli": "^6.0.1",
     "remark-license": "^5.0.0",
@@ -107,18 +106,25 @@
           "ignoreUrls": true
         }
       ],
-      "capitalized-comments": "off",
-      "camelcase": "off",
-      "no-warning-comments": "off",
-      "unicorn/catch-error-name": "off"
+      "camelcase": 0,
+      "no-param-reassign": 0,
+      "comma-dangle": 1,
+      "arrow-parens": 0,
+      "implicit-arrow-linebreak": 0,
+      "object-curly-newline": 0,
+      "unicorn/catch-error-name": 0,
+      "lines-between-class-members": 0,
+      "eslint-comments/no-unused-disable": 0,
+      "eslint-disable/no-restricted-syntax": 0,
+      "eslint-disable/no-continue": 0,
+      "unicorn/prevent-abbreviations": 0,
+      "global-require": 0
     },
     "space": true
   },
   "scripts": {
-    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov -t $CODECOV_TOKEN",
     "lint": "xo --fix && remark . -qfo",
     "precommit": "rm -rf coverage/*.* && lint-staged && npm test",
-    "test": "npm run lint && npm run test-coverage",
-    "test-coverage": "nyc ava"
+    "test": "npm run lint && xo"
   }
 }

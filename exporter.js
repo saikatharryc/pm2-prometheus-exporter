@@ -1,9 +1,7 @@
-// @ts-check
-
 const http = require('http');
 const prom = require('prom-client');
 const pm2 = require('pm2');
-const logger = require('pino')()
+const logger = require('pino')();
 
 const io = require('@pm2/io');
 
@@ -33,7 +31,7 @@ function metrics() {
   const registry = new prom.Registry();
   map.forEach(m => {
     pm[m[0]] = new prom.Gauge({
-      name: prefix + '_' + m[0],
+      name: `${prefix}_${m[0]}`,
       help: m[1],
       labelNames: labels,
       registers: [registry]
@@ -48,7 +46,7 @@ function metrics() {
           name: p.name,
           instance: p.pm2_env.NODE_APP_INSTANCE,
           interpreter: p.pm2_env.exec_interpreter,
-          node_version: p.pm2_env.node_version,
+          node_version: p.pm2_env.node_version
         };
 
         const values = {
@@ -58,31 +56,28 @@ function metrics() {
           uptime: Math.round((Date.now() - p.pm2_env.pm_uptime) / 1000),
           instances: p.pm2_env.instances || 1,
           restarts: p.pm2_env.restart_time,
-          prev_restart_delay: p.pm2_env.prev_restart_delay,
+          prev_restart_delay: p.pm2_env.prev_restart_delay
         };
 
         const names = Object.keys(p.pm2_env.axm_monitor);
 
-        for (let index = 0; index < names.length; index++) {
-          const name = names[index];
-
+        for (const name of names) {
           try {
             let value;
             if (name === 'Loop delay') {
-              value = parseFloat(p.pm2_env.axm_monitor[name].value.match(/^[\d.]+/)[0]);
+              value = Number.parseFloat(p.pm2_env.axm_monitor[name].value.match(/^[\d.]+/)[0]);
             } else if (name.match(/Event Loop Latency|Heap Size/)) {
-              value = parseFloat(p.pm2_env.axm_monitor[name].value.toString().split('m')[0]);
+              value = Number.parseFloat(p.pm2_env.axm_monitor[name].value.toString().split('m')[0]);
             } else {
-              value = parseFloat(p.pm2_env.axm_monitor[name].value);
+              value = Number.parseFloat(p.pm2_env.axm_monitor[name].value);
             }
 
-            if (isNaN(value)) {
+            if (value.isNaN()) {
               logger.warn('Ignoring metric name "%s" as value "%s" is not a number', name, value);
-
               continue;
             }
 
-            const metricName = prefix + '_' + name.replace(/[^A-Z0-9]+/gi, '_').toLowerCase();
+            const metricName = `${prefix}_${name.replace(/[^a-z\d]+/gi, '_').toLowerCase()}`;
 
             if (!pm[metricName]) {
               pm[metricName] = new prom.Gauge({
@@ -111,7 +106,7 @@ function metrics() {
           pm[k].set(conf, values[k]);
         });
       });
-      return registry.metrics()
+      return registry.metrics();
     })
     .catch(err => {
       logger.error(err);
@@ -119,8 +114,8 @@ function metrics() {
 }
 
 function exporter() {
-  const server = http.createServer((req, res) => {
-    switch (req.url) {
+  const server = http.createServer((request, res) => {
+    switch (request.url) {
       case '/':
         return res.end('<html>PM2 metrics: <a href="/metrics">/metrics</a></html>');
       case '/metrics':

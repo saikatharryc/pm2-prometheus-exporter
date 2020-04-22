@@ -72,7 +72,7 @@ function metrics() {
               value = Number.parseFloat(p.pm2_env.axm_monitor[name].value);
             }
 
-            if (isNaN(value)) {
+            if (Number.isNaN(value)) {
               logger.warn('Ignoring metric name "%s" as value "%s" is not a number', name, value);
               continue;
             }

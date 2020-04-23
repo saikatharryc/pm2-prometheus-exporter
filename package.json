@@ -51,6 +51,10 @@
     "type": "git",
     "url": "git+https://github.com/saikatharryc/pm2-prometheus-exporter.git"
   },
+  "config": {
+    "host": "0.0.0.0",
+    "port": 9209
+  },
   "apps": [
     {
       "merge_logs": true,

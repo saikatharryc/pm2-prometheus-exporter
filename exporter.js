@@ -3,7 +3,7 @@ const prom = require('prom-client');
 const pm2 = require('pm2');
 const logger = require('pino')();
 
-const io = require('@pm2/io');
+const io = require('pmx');
 
 const prefix = 'pm2';
 const labels = ['id', 'name', 'instance', 'interpreter', 'node_version'];

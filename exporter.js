@@ -125,12 +125,14 @@ function exporter() {
     }
   });
 
-  const conf = io.initModule();
-  const port = conf.port || 9209;
-  const host = conf.host || '0.0.0.0';
+  io.initModule({}, function (err, conf) {
+    const port = conf.port || 9209;
+    const host = conf.host || '0.0.0.0';
 
-  server.listen(port, host);
-  logger.info('pm2-prometheus-exporter listening at %s:%s', host, port);
+    server.listen(port, host);
+    logger.info('pm2-prometheus-exporter listening at %s:%s', host, port);
+  });
+
 }
 
 exporter();

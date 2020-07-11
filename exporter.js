@@ -3,7 +3,7 @@ const prom = require('prom-client');
 const pm2 = require('pm2');
 const logger = require('pino')();
 
-const io = require('@pm2/io');
+const io = require('pmx');
 
 const prefix = 'pm2';
 const labels = ['id', 'name', 'instance', 'interpreter', 'node_version'];
@@ -17,16 +17,14 @@ const map = [
   ['prev_restart_delay', 'Previous restart delay']
 ];
 
-function pm2c(cmd, args = []) {
-  return new Promise((resolve, reject) => {
-    pm2[cmd](args, (err, resp) => {
-      if (err) return reject(err);
-      resolve(resp);
-    });
+const pm2c = (cmd, args = []) => new Promise((resolve, reject) => {
+  pm2[cmd](args, (err, resp) => {
+    if (err) return reject(err);
+    return resolve(resp);
   });
-}
+});
 
-function metrics() {
+const metrics = () => {
   const pm = {};
   const registry = new prom.Registry();
   map.forEach(m => {
@@ -61,6 +59,7 @@ function metrics() {
 
         const names = Object.keys(p.pm2_env.axm_monitor);
 
+        // eslint-disable-next-line no-restricted-syntax
         for (const name of names) {
           try {
             let value;
@@ -74,6 +73,7 @@ function metrics() {
 
             if (Number.isNaN(value)) {
               logger.warn('Ignoring metric name "%s" as value "%s" is not a number', name, value);
+              // eslint-disable-next-line no-continue
               continue;
             }
 
@@ -94,6 +94,7 @@ function metrics() {
           }
         }
 
+        // eslint-disable-next-line consistent-return
         Object.keys(values).forEach(k => {
           if (values[k] === null) return null;
 
@@ -111,9 +112,9 @@ function metrics() {
     .catch(err => {
       logger.error(err);
     });
-}
+};
 
-function exporter() {
+const exporter = () => {
   const server = http.createServer((request, res) => {
     switch (request.url) {
       case '/':
@@ -125,12 +126,13 @@ function exporter() {
     }
   });
 
-  const conf = io.initModule();
-  const port = conf.port || 9209;
-  const host = conf.host || '0.0.0.0';
+  return io.initModule({}, (err, conf) => {
+    const port = conf.port || 9209;
+    const host = conf.host || '0.0.0.0';
 
-  server.listen(port, host);
-  logger.info('pm2-prometheus-exporter listening at %s:%s', host, port);
-}
+    server.listen(port, host);
+    logger.info('pm2-prometheus-exporter listening at %s:%s', host, port);
+  });
+};
 
 exporter();

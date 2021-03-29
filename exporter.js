@@ -27,17 +27,18 @@ const pm2c = (cmd, args = []) => new Promise((resolve, reject) => {
 const metrics = () => {
   const pm = {};
   const registry = new prom.Registry();
-  map.forEach(m => {
+  for (const m of map) {
     pm[m[0]] = new prom.Gauge({
       name: `${prefix}_${m[0]}`,
       help: m[1],
       labelNames: labels,
       registers: [registry]
     });
-  });
+  }
+
   return pm2c('list')
     .then(list => {
-      list.forEach(p => {
+      for (const p of list) {
         logger.debug(p, p.exec_interpreter, '>>>>>>');
         const conf = {
           id: p.pm_id,
@@ -65,7 +66,7 @@ const metrics = () => {
             let value;
             if (name === 'Loop delay') {
               value = Number.parseFloat(p.pm2_env.axm_monitor[name].value.match(/^[\d.]+/)[0]);
-            } else if (name.match(/Event Loop Latency|Heap Size/)) {
+            } else if (/Event Loop Latency|Heap Size/.test(name)) {
               value = Number.parseFloat(p.pm2_env.axm_monitor[name].value.toString().split('m')[0]);
             } else {
               value = Number.parseFloat(p.pm2_env.axm_monitor[name].value);
@@ -95,18 +96,19 @@ const metrics = () => {
         }
 
         // eslint-disable-next-line consistent-return
-        Object.keys(values).forEach(k => {
-          if (values[k] === null) return null;
+        for (const k of Object.keys(values)) {
+          if (values[k] === null)  null; continue;
 
           // Prometheus client Gauge will throw an error if we don't return a number
           // so we will skip this metrics value
           if (values[k] === undefined) {
-            return null;
+            null; continue;
           }
 
           pm[k].set(conf, values[k]);
-        });
-      });
+        }
+      }
+
       return registry.metrics();
     })
     .catch(err => {

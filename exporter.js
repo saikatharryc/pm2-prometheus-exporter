@@ -43,7 +43,7 @@ const metrics = () => {
         const conf = {
           id: p.pm_id,
           name: p.name,
-          version: p.pm2_env.version,
+          version: p.pm2_env.version ? p.pm2_env.version : 'N/A',
           instance: p.pm2_env.NODE_APP_INSTANCE,
           interpreter: p.pm2_env.exec_interpreter,
           node_version: p.pm2_env.node_version

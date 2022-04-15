@@ -6,7 +6,7 @@ const logger = require('pino')();
 const io = require('pmx');
 
 const prefix = 'pm2';
-const labels = ['id', 'name', 'instance', 'interpreter', 'node_version'];
+const labels = ['id', 'name', 'instance', 'version', 'interpreter', 'node_version'];
 const map = [
   ['up', 'Is the process running'],
   ['cpu', 'Process cpu usage'],
@@ -43,6 +43,7 @@ const metrics = () => {
         const conf = {
           id: p.pm_id,
           name: p.name,
+          version: p.pm2_env.version ? p.pm2_env.version : 'N/A',
           instance: p.pm2_env.NODE_APP_INSTANCE,
           interpreter: p.pm2_env.exec_interpreter,
           node_version: p.pm2_env.node_version
@@ -97,13 +98,11 @@ const metrics = () => {
 
         // eslint-disable-next-line consistent-return
         for (const k of Object.keys(values)) {
-          if (values[k] === null)  null; continue;
+          if (values[k] === null) continue;
 
           // Prometheus client Gauge will throw an error if we don't return a number
           // so we will skip this metrics value
-          if (values[k] === undefined) {
-            null; continue;
-          }
+          if (values[k] === undefined) continue;
 
           pm[k].set(conf, values[k]);
         }

@@ -3,9 +3,9 @@
   "version": "1.0.47",
   "description": "Produces Metrics of Pm2 of running instances.little updated version of https://github.com/burningtree/pm2-prometheus-exporter, any PR is appriciated.",
   "dependencies": {
-    "@pm2/io": "^4.1.4",
+    "@pm2/io": "^5.0.0",
     "pino": "^5.12.0",
-    "pm2": "^4.4.0",
+    "pm2": "^5.2.0",
     "pmx": "^1.6.7",
     "prom-client": "^11.2.1"
   },

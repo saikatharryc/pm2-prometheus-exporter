@@ -10,7 +10,7 @@
     "prom-client": "^11.2.1"
   },
   "devDependencies": {
-    "ava": "^3.10.1",
+    "ava": "^5.2.0",
     "codecov": "^3.2.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "latest",

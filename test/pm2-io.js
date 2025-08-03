@@ -7,22 +7,22 @@ const iteration = 10;
 
 // Here we are going to call valvar.set() to set the new value
 const metric_2 = probe.metric({
-  name: 'Metric 2'
+  name: 'Metric 2',
 });
 
 const meter = probe.meter({
   name: 'Meter req/sec',
   samples: 1, // This is per second. To get per min set this value to 60
-  timeframe: 60
+  timeframe: 60,
 });
 
 const counter = probe.counter({
-  name: 'Counter'
+  name: 'Counter',
 });
 
 const histogram = probe.histogram({
   name: 'Histogram',
-  measurement: 'mean'
+  measurement: 'mean',
 });
 
 let latency = 0;
@@ -45,7 +45,7 @@ const func = () => {
     t.pass();
   });
   test('on counter ', t => {
-    // eslint-disable-next-line no-underscore-dangle
+     
     t.is(counter._count, iteration);
     t.pass();
   });

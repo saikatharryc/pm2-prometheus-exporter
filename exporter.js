@@ -121,7 +121,7 @@ const exporter = () => {
       case '/':
         return res.end('<html>PM2 metrics: <a href="/metrics">/metrics</a></html>');
       case '/metrics':
-        res.setHeader('Content-Type', 'text/plain; version=0.0.4');
+        res.setHeader('Content-Type', 'text/plain; version=0.0.4; charset=utf-8');
         return metrics().then(data => res.end(data));
       default:
         return res.end('404');

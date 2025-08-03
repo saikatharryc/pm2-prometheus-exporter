@@ -1,4 +1,4 @@
-const http = require('http');
+const http = require('node:http');
 const prom = require('prom-client');
 const pm2 = require('pm2');
 const logger = require('pino')();
@@ -14,7 +14,7 @@ const map = [
   ['uptime', 'Process uptime'],
   ['instances', 'Process instances'],
   ['restarts', 'Process restarts'],
-  ['prev_restart_delay', 'Previous restart delay']
+  ['prev_restart_delay', 'Previous restart delay'],
 ];
 
 const pm2c = (cmd, args = []) => new Promise((resolve, reject) => {
@@ -32,7 +32,7 @@ const metrics = () => {
       name: `${prefix}_${m[0]}`,
       help: m[1],
       labelNames: labels,
-      registers: [registry]
+      registers: [registry],
     });
   }
 
@@ -46,7 +46,7 @@ const metrics = () => {
           version: p.pm2_env.version ? p.pm2_env.version : 'N/A',
           instance: p.pm2_env.NODE_APP_INSTANCE,
           interpreter: p.pm2_env.exec_interpreter,
-          node_version: p.pm2_env.node_version
+          node_version: p.pm2_env.node_version,
         };
 
         const values = {
@@ -56,12 +56,12 @@ const metrics = () => {
           uptime: Math.round((Date.now() - p.pm2_env.pm_uptime) / 1000),
           instances: p.pm2_env.instances || 1,
           restarts: p.pm2_env.restart_time,
-          prev_restart_delay: p.pm2_env.prev_restart_delay
+          prev_restart_delay: p.pm2_env.prev_restart_delay,
         };
 
         const names = Object.keys(p.pm2_env.axm_monitor);
 
-        // eslint-disable-next-line no-restricted-syntax
+         
         for (const name of names) {
           try {
             let value;
@@ -75,7 +75,7 @@ const metrics = () => {
 
             if (Number.isNaN(value)) {
               logger.warn('Ignoring metric name "%s" as value "%s" is not a number', name, value);
-              // eslint-disable-next-line no-continue
+               
               continue;
             }
 
@@ -86,7 +86,7 @@ const metrics = () => {
                 name: metricName,
                 help: name,
                 labelNames: labels,
-                registers: [registry]
+                registers: [registry],
               });
             }
 
@@ -96,7 +96,7 @@ const metrics = () => {
           }
         }
 
-        // eslint-disable-next-line consistent-return
+         
         for (const k of Object.keys(values)) {
           if (values[k] === null) continue;
 
@@ -118,13 +118,18 @@ const metrics = () => {
 const exporter = () => {
   const server = http.createServer((request, res) => {
     switch (request.url) {
-      case '/':
+      case '/': {
         return res.end('<html>PM2 metrics: <a href="/metrics">/metrics</a></html>');
-      case '/metrics':
+      }
+
+      case '/metrics': {
         res.setHeader('Content-Type', 'text/plain; version=0.0.4');
         return metrics().then(data => res.end(data));
-      default:
+      }
+
+      default: {
         return res.end('404');
+      }
     }
   });
 

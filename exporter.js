@@ -49,11 +49,13 @@ const metrics = () => {
           node_version: p.pm2_env.node_version
         };
 
+        const isOnline = p.pm2_env.status === 'online';
+
         const values = {
-          up: p.pm2_env.status === 'online' ? 1 : 0,
+          up: isOnline ? 1 : 0,
           cpu: p.monit.cpu,
           memory: p.monit.memory,
-          uptime: Math.round((Date.now() - p.pm2_env.pm_uptime) / 1000),
+          uptime: isOnline ? Math.round((Date.now() - p.pm2_env.pm_uptime) / 1000) : 0,
           instances: p.pm2_env.instances || 1,
           restarts: p.pm2_env.restart_time,
           prev_restart_delay: p.pm2_env.prev_restart_delay
